@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nirmala Choudhary — Data Analyst</title>
+<meta name="description" content="Nirmala Choudhary — Data Analyst. Power BI, SQL, Python. Portfolio of dashboards and data projects.">
+<style>
+  :root{
+    --bg:#0f172a; --bg2:#1e293b; --bg3:#243049;
+    --txt:#e2e8f0; --muted:#94a3b8; --accent:#38bdf8; --accent2:#2dd4bf;
+    --border:#334155;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{font-family:'Segoe UI',system-ui,Arial,sans-serif;background:var(--bg);color:var(--txt);line-height:1.6}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+
+  /* Nav */
+  nav{position:sticky;top:0;z-index:50;background:rgba(15,23,42,.85);backdrop-filter:blur(8px);border-bottom:1px solid var(--border)}
+  nav .wrap{display:flex;justify-content:space-between;align-items:center;height:60px}
+  nav .logo{font-weight:700;color:var(--accent)}
+  nav .links a{margin-left:22px;color:var(--muted);font-size:.95rem;transition:color .2s}
+  nav .links a:hover{color:var(--accent)}
+  @media(max-width:600px){nav .links a{margin-left:14px;font-size:.85rem}}
+
+  /* Hero */
+  header{padding:72px 0 56px;text-align:center}
+  header .eyebrow{color:var(--accent);font-weight:600;letter-spacing:2px;text-transform:uppercase;font-size:.8rem}
+  header h1{font-size:3rem;margin:10px 0 6px;background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  header h2{font-size:1.3rem;color:var(--muted);font-weight:500}
+  header p.bio{max-width:680px;margin:20px auto 0;color:var(--muted)}
+  .btns{margin-top:28px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+  .btn{padding:11px 22px;border-radius:8px;font-weight:600;font-size:.95rem;border:1px solid var(--border);transition:.2s;background:var(--bg2)}
+  .btn:hover{border-color:var(--accent);transform:translateY(-2px)}
+  .btn.primary{background:linear-gradient(90deg,var(--accent),var(--accent2));color:#06283d;border:none}
+  @media(max-width:600px){header h1{font-size:2.1rem}}
+
+  /* Sections */
+  section{padding:48px 0}
+  .section-title{font-size:1.8rem;margin-bottom:6px}
+  .section-title .bar{color:var(--accent)}
+  .section-sub{color:var(--muted);margin-bottom:34px}
+
+  /* Projects */
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+  @media(max-width:760px){.grid{grid-template-columns:1fr}}
+  .card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;overflow:hidden;transition:.25s;display:flex;flex-direction:column}
+  .card:hover{transform:translateY(-4px);border-color:var(--accent);box-shadow:0 12px 30px rgba(0,0,0,.35)}
+  .card .shot{aspect-ratio:16/9;overflow:hidden;background:var(--bg3);border-bottom:1px solid var(--border)}
+  .card .shot img{width:100%;height:100%;object-fit:cover;object-position:top}
+  .card .body{padding:20px;display:flex;flex-direction:column;flex:1}
+  .badge{display:inline-block;font-size:.7rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--accent2);margin-bottom:8px}
+  .badge.live{color:#06283d;background:var(--accent2);padding:3px 9px;border-radius:20px}
+  .card h3{font-size:1.2rem;margin-bottom:8px}
+  .card p{color:var(--muted);font-size:.92rem;flex:1}
+  .tags{margin:14px 0 16px;display:flex;flex-wrap:wrap;gap:7px}
+  .tag{font-size:.72rem;background:var(--bg3);color:var(--muted);padding:4px 10px;border-radius:6px;border:1px solid var(--border)}
+  .card .actions{display:flex;gap:10px}
+  .card .actions a{font-size:.85rem;font-weight:600;color:var(--accent);border:1px solid var(--border);padding:7px 14px;border-radius:7px;transition:.2s}
+  .card .actions a:hover{background:var(--accent);color:#06283d}
+
+  /* Skills */
+  .skillset{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  @media(max-width:760px){.skillset{grid-template-columns:1fr}}
+  .skillgroup{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:18px}
+  .skillgroup h4{color:var(--accent);font-size:.95rem;margin-bottom:12px}
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{font-size:.82rem;background:var(--bg3);padding:6px 12px;border-radius:20px;border:1px solid var(--border)}
+
+  /* Contact */
+  .contact{text-align:center;background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:44px 24px;margin-bottom:40px}
+  .contact h2{font-size:1.8rem;margin-bottom:8px}
+  .contact p{color:var(--muted);margin-bottom:22px}
+
+  footer{text-align:center;color:var(--muted);font-size:.85rem;padding:24px 0 40px;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+
+<nav><div class="wrap">
+  <span class="logo">NC.</span>
+  <div class="links">
+    <a href="#projects">Projects</a>
+    <a href="#skills">Skills</a>
+    <a href="#contact">Contact</a>
+    <a href="assets/Nirmala_Choudhary_Resume.pdf" download>Resume</a>
+  </div>
+</div></nav>
+
+<header><div class="wrap">
+  <div class="eyebrow">Data Analyst · Pune, India</div>
+  <h1>Nirmala Choudhary</h1>
+  <h2>Power BI · SQL · Python · Data Visualization</h2>
+  <p class="bio">I turn messy data into decisions — building and deploying dashboards end-to-end, from REST APIs and SQL to pandas and Power BI. Backed by a builder's mindset and real customer-facing business sense.</p>
+  <div class="btns">
+    <a class="btn primary" href="assets/Nirmala_Choudhary_Resume.pdf" download>📄 Download Résumé</a>
+    <a class="btn" href="https://github.com/nikita1-pixel" target="_blank">GitHub</a>
+    <a class="btn" href="https://linkedin.com/in/nirmalachoudharyou" target="_blank">LinkedIn</a>
+    <a class="btn" href="mailto:nirmalachoudharyu@gmail.com">Email</a>
+  </div>
+</div></header>
+
+<section id="projects"><div class="wrap">
+  <h2 class="section-title"><span class="bar">#</span> Projects</h2>
+  <p class="section-sub">Real, end-to-end data work — live apps, BI dashboards, and SQL analysis.</p>
+  <div class="grid">
+
+    <div class="card">
+      <div class="shot"><img src="assets/jobapp.png" alt="Remote Job Market Analyzer dashboard"></div>
+      <div class="body">
+        <span class="badge live">● Live</span>
+        <h3>Remote Job Market Analyzer</h3>
+        <p>A live, deployed web app that pulls real-time remote-job postings from the Remotive REST API and visualizes hiring trends — KPI cards, filters, a clickable jobs table, and CSV export.</p>
+        <div class="tags"><span class="tag">Python</span><span class="tag">REST API</span><span class="tag">pandas</span><span class="tag">Plotly</span><span class="tag">Streamlit</span></div>
+        <div class="actions">
+          <a href="https://remote-job-market-analyzer-cpjacv845jkwymnerq27cl.streamlit.app/" target="_blank">🌐 Live App</a>
+          <a href="https://github.com/nikita1-pixel/remote-job-market-analyzer" target="_blank">Code</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="shot"><img src="assets/starbucks.png" alt="Starbucks Store Performance dashboard"></div>
+      <div class="body">
+        <span class="badge">Power BI Case Study</span>
+        <h3>Starbucks Store Performance</h3>
+        <p>Analyzed 45,000+ transactions to diagnose a regional sales decline. Found the dip was concentrated in 2 of 5 stores and that a price hike was masking a ~12% footfall crash — with 3 recommendations.</p>
+        <div class="tags"><span class="tag">Power BI</span><span class="tag">DAX</span><span class="tag">Power Query</span><span class="tag">ETL</span></div>
+        <div class="actions">
+          <a href="https://github.com/nikita1-pixel/starbucks-store-performance" target="_blank">View Project</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="shot"><img src="assets/netflix.png" alt="Netflix Content Strategy dashboard"></div>
+      <div class="body">
+        <span class="badge">Power BI Case Study</span>
+        <h3>Netflix Content Strategy</h3>
+        <p>Modeled 10,000+ titles into a star schema and analyzed catalog by genre, language, and rating with DAX — including catching and fixing a data-integrity bug that was inflating counts.</p>
+        <div class="tags"><span class="tag">Power BI</span><span class="tag">DAX</span><span class="tag">Star Schema</span><span class="tag">Data Modeling</span></div>
+        <div class="actions">
+          <a href="https://github.com/nikita1-pixel/netflix-content-strategy" target="_blank">View Project</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="shot"><img src="assets/olist.png" alt="Olist SQL revenue analysis chart"></div>
+      <div class="body">
+        <span class="badge">SQL Analysis</span>
+        <h3>Sales &amp; SQL Analysis — Olist</h3>
+        <p>Explored a 100,000+ order Brazilian e-commerce dataset. Wrote a 3-table chain JOIN (items → orders → customers) in SQL to compute revenue by state, visualized with Matplotlib.</p>
+        <div class="tags"><span class="tag">SQL</span><span class="tag">SQLite</span><span class="tag">Python</span><span class="tag">pandas</span><span class="tag">Matplotlib</span></div>
+        <div class="actions">
+          <a href="https://github.com/nikita1-pixel/sales-data-analysis" target="_blank">View Project</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div></section>
+
+<section id="skills"><div class="wrap">
+  <h2 class="section-title"><span class="bar">#</span> Skills</h2>
+  <p class="section-sub">The toolkit behind the projects.</p>
+  <div class="skillset">
+    <div class="skillgroup"><h4>Business Intelligence</h4><div class="chips">
+      <span class="chip">Power BI</span><span class="chip">DAX</span><span class="chip">Power Query</span><span class="chip">Star Schema</span><span class="chip">KPI Dashboards</span><span class="chip">Excel</span><span class="chip">IBM Cognos</span>
+    </div></div>
+    <div class="skillgroup"><h4>Languages &amp; Analysis</h4><div class="chips">
+      <span class="chip">SQL</span><span class="chip">Python</span><span class="chip">pandas</span><span class="chip">Window Functions</span><span class="chip">Joins</span><span class="chip">EDA</span><span class="chip">Data Cleaning</span>
+    </div></div>
+    <div class="skillgroup"><h4>Visualization</h4><div class="chips">
+      <span class="chip">Plotly</span><span class="chip">Matplotlib</span><span class="chip">Streamlit</span><span class="chip">Dashboards</span>
+    </div></div>
+    <div class="skillgroup"><h4>Tools &amp; Stats</h4><div class="chips">
+      <span class="chip">Git/GitHub</span><span class="chip">REST APIs</span><span class="chip">pytest</span><span class="chip">Descriptive Stats</span><span class="chip">Outlier Detection</span>
+    </div></div>
+  </div>
+</div></section>
+
+<section id="contact"><div class="wrap">
+  <div class="contact">
+    <h2>Let's work together</h2>
+    <p>Open to Data Analyst roles in Pune (hybrid / remote). Let's talk.</p>
+    <div class="btns">
+      <a class="btn primary" href="mailto:nirmalachoudharyu@gmail.com">📧 nirmalachoudharyu@gmail.com</a>
+      <a class="btn" href="https://linkedin.com/in/nirmalachoudharyou" target="_blank">LinkedIn</a>
+      <a class="btn" href="https://github.com/nikita1-pixel" target="_blank">GitHub</a>
+    </div>
+  </div>
+</div></section>
+
+<footer>
+  Built by Nirmala Choudhary · Pune, India · © 2026
+</footer>
+
+</body>
+</html>
