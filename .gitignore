@@ -1,3 +1,2 @@
-*.jpg
-the_same_3d*.png
-_*.png
+_*
+*.tmp
