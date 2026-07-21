@@ -130,7 +130,11 @@ nav{max-width:var(--maxw);margin:0 auto;display:flex;align-items:center;justify-
 .kpi .n{font-family:'JetBrains Mono',monospace;font-weight:600;font-size:2rem;line-height:1;color:var(--ink)}
 .kpi.accent .n{color:var(--amber)}
 .kpi .l{font-size:.78rem;color:var(--muted);margin-top:8px}
-.kpi .spark{position:absolute;right:16px;top:20px;width:52px;height:20px;opacity:.55}
+.kpi .spark{position:absolute;right:16px;top:20px;width:52px;height:20px;opacity:.55;animation:sparkBreathe 4.5s ease-in-out infinite}
+.kpi:nth-child(2) .spark{animation-delay:.7s}
+.kpi:nth-child(3) .spark{animation-delay:1.4s}
+.kpi:nth-child(4) .spark{animation-delay:2.1s}
+@keyframes sparkBreathe{0%,100%{opacity:.4;transform:translateY(0)}50%{opacity:.78;transform:translateY(-1.5px)}}
 .kpi-note{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--muted-2);margin-top:14px;text-align:center;letter-spacing:.02em}
 
 /* ---- quick facts ---- */
@@ -139,6 +143,28 @@ nav{max-width:var(--maxw);margin:0 auto;display:flex;align-items:center;justify-
 .qf-item .qk{font-family:'JetBrains Mono',monospace;font-size:.65rem;text-transform:uppercase;letter-spacing:.1em;color:var(--teal)}
 .qf-item .qv{font-size:.9rem;color:var(--ink);font-weight:500}
 @media(max-width:640px){.qf{grid-template-columns:1fr 1fr}}
+
+/* ---- interactive query demo ---- */
+.qbox{background:var(--panel);border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:var(--glow);max-width:760px;margin:0 auto}
+.qbox-bar{display:flex;align-items:center;justify-content:space-between;padding:11px 16px;border-bottom:1px solid var(--line);background:rgba(255,255,255,.015);gap:12px;flex-wrap:wrap}
+.qbox-bar .dots{display:flex;gap:6px}
+.qbox-bar .dots i{width:10px;height:10px;border-radius:50%;background:var(--muted-2);opacity:.5}
+.qtabs{display:flex;gap:6px}
+.qtab{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--muted);background:transparent;border:1px solid var(--line);border-radius:7px;padding:5px 11px;cursor:pointer;transition:.2s}
+.qtab.active,.qtab:hover{color:var(--teal);border-color:rgba(45,212,191,.4)}
+.qbox-body{padding:20px 22px}
+.qsql{font-family:'JetBrains Mono',monospace;font-size:.82rem;line-height:1.65;color:var(--ink);white-space:pre-wrap;margin-bottom:16px}
+.qsql .kw{color:var(--cyan)}
+.qrun{font-size:.85rem;padding:9px 18px}
+.qresult{margin-top:18px;display:flex;flex-direction:column;gap:9px}
+.qrow{display:grid;grid-template-columns:118px 46px 1fr;align-items:center;gap:10px;opacity:0;transform:translateX(-8px);transition:opacity .4s,transform .4s}
+.qrow.in{opacity:1;transform:none}
+.qrow .qk{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--muted)}
+.qrow .qv{font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--ink);text-align:right}
+.qbar{height:16px;border-radius:5px;background:var(--teal);width:0;transition:width .7s cubic-bezier(.2,.8,.2,1)}
+.qbar.hi{background:var(--red)}
+.qcap{font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--muted-2);margin-top:16px;min-height:1em}
+@media(max-width:640px){.qrow{grid-template-columns:92px 40px 1fr}}
 
 /* ---- about + growth ---- */
 .about-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:44px;align-items:stretch}
@@ -415,6 +441,30 @@ footer small{color:var(--muted-2);font-size:.82rem}
   </div>
 </section>
 
+<!-- ============ TRY A QUERY ============ -->
+<section class="section-pad wrap" id="query">
+  <div class="head reveal">
+    <span class="eyebrow">Try It Yourself</span>
+    <h2>Run one of my real queries</h2>
+    <p>Actual analysis from my Lending Club project — pick a query and hit run.</p>
+  </div>
+  <div class="qbox reveal">
+    <div class="qbox-bar">
+      <span class="dots"><i></i><i></i><i></i></span>
+      <span class="qtabs">
+        <button class="qtab active" data-q="grade">default by grade</button>
+        <button class="qtab" data-q="term">default by term</button>
+      </span>
+    </div>
+    <div class="qbox-body">
+      <pre class="qsql" id="qsql"></pre>
+      <button class="btn btn-primary qrun" id="qrun">Run query ▸</button>
+      <div class="qresult" id="qresult"></div>
+      <p class="qcap" id="qcap"></p>
+    </div>
+  </div>
+</section>
+
 <!-- ============ PROJECTS ============ -->
 <section class="section-pad wrap" id="projects">
   <div class="head reveal">
@@ -612,6 +662,46 @@ document.querySelectorAll('[data-count]').forEach(el=>cio.observe(el));
     }catch(err){status.textContent='Network error. Please email me directly at nirmalachoudharyu@gmail.com.';status.classList.add('err');}
     finally{btn.disabled=false;btn.textContent=orig;}
   });
+})();
+
+/* interactive query demo — real Lending Club numbers */
+(function(){
+  const sqlEl=document.getElementById('qsql'); if(!sqlEl)return;
+  const resEl=document.getElementById('qresult'), capEl=document.getElementById('qcap');
+  const data={
+    grade:{
+      sql:'SELECT grade, ROUND(AVG(defaulted)*100) AS default_rate\nFROM loans\nGROUP BY grade\nORDER BY grade;',
+      rows:[['A',6],['B',13],['C',23],['D',30],['E',39],['F',45],['G',50]],
+      unit:'%', cap:'// 1.3M loans · default rate climbs ~8x from A to G'
+    },
+    term:{
+      sql:'SELECT term, ROUND(AVG(defaulted)*100) AS default_rate\nFROM loans\nGROUP BY term;',
+      rows:[['36 months',16],['60 months',33]],
+      unit:'%', cap:'// 60-month loans default at double the 36-month rate'
+    }
+  };
+  let cur='grade';
+  function paintSQL(){
+    sqlEl.innerHTML=data[cur].sql.replace(/\b(SELECT|FROM|GROUP BY|ORDER BY|AVG|ROUND|AS)\b/g,'<span class="kw">$1</span>');
+    resEl.innerHTML=''; capEl.textContent='';
+  }
+  function run(){
+    const d=data[cur], max=Math.max.apply(null,d.rows.map(function(r){return r[1];}));
+    resEl.innerHTML='';
+    d.rows.forEach(function(r,i){
+      const row=document.createElement('div'); row.className='qrow';
+      row.innerHTML='<span class="qk">'+r[0]+'</span><span class="qv">'+r[1]+d.unit+'</span><div class="qbar'+(r[1]===max?' hi':'')+'"></div>';
+      resEl.appendChild(row);
+      setTimeout(function(){row.classList.add('in'); row.querySelector('.qbar').style.width=(r[1]/max*100)+'%';}, 90*i+60);
+    });
+    setTimeout(function(){capEl.textContent=d.cap;}, 90*d.rows.length+250);
+  }
+  document.querySelectorAll('.qtab').forEach(function(t){t.onclick=function(){
+    document.querySelectorAll('.qtab').forEach(function(x){x.classList.remove('active');});
+    t.classList.add('active'); cur=t.dataset.q; paintSQL();
+  };});
+  document.getElementById('qrun').onclick=run;
+  paintSQL();
 })();
 </script>
 </body>
