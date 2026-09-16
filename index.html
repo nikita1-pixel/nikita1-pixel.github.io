@@ -246,8 +246,8 @@ footer{border-top:1px solid var(--line);padding:32px 0;text-align:center;color:v
 <section id="about">
   <div class="container">
     <div class="stats reveal">
-      <div class="stat"><div class="n" data-count="3">0</div><div class="l">Apps shipped</div></div>
-      <div class="stat"><div class="n" data-count="2">0</div><div class="l">Live deployments</div></div>
+      <div class="stat"><div class="n" data-count="4">0</div><div class="l">Apps shipped</div></div>
+      <div class="stat"><div class="n" data-count="3">0</div><div class="l">Live deployments</div></div>
       <div class="stat"><div class="n mono">MERN</div><div class="l">Core stack</div></div>
       <div class="stat"><div class="n mono">∞</div><div class="l">Bugs debugged</div></div>
     </div>
@@ -298,11 +298,23 @@ footer{border-top:1px solid var(--line);padding:32px 0;text-align:center;color:v
       </article>
       <article class="pcard reveal">
         <div class="pthumb">
+          <div class="ph-fallback">Trekus</div>
+          <img src="assets/trekus.png" alt="Trekus preview" loading="lazy"
+               onerror="this.onerror=null;this.src='https://image.thum.io/get/width/1000/crop/700/https://trekus.co';this.addEventListener('error',()=>this.remove())">
+        </div>
+        <div class="pnum mono">02</div>
+        <h4>Trekus</h4>
+        <div class="pstack">React · Supabase · PostgreSQL · Gemini AI</div>
+        <p>A live full-stack trekking platform on its own domain — member auth, bookings, a community photo wall &amp; reviews, live weather, and an AI "Trail Guide" chatbot. Built on React + Supabase (Postgres with row-level security), with unit tests &amp; CI.</p>
+        <div class="plinks"><a href="https://trekus.co" target="_blank" rel="noopener" class="btn btn-primary btn-sm">Live ↗</a><!-- Trekus repo is private; make it public then uncomment: <a href="https://github.com/nikita1-pixel/Trekus" target="_blank" rel="noopener" class="btn btn-ghost btn-sm">Code</a> --></div>
+      </article>
+      <article class="pcard reveal">
+        <div class="pthumb">
           <div class="ph-fallback">NoteBoard</div>
           <img src="assets/noteboard.png" alt="NoteBoard preview" loading="lazy"
                onerror="this.onerror=null;this.src='https://opengraph.githubassets.com/1/nikita1-pixel/mern-notes-app';this.addEventListener('error',()=>this.remove())">
         </div>
-        <div class="pnum mono">02</div>
+        <div class="pnum mono">03</div>
         <h4>NoteBoard</h4>
         <div class="pstack">React · Vite · Express · MongoDB</div>
         <p>A MERN notes app with full CRUD, image uploads, a responsive grid, and automatic dark mode over an Express REST API.</p>
@@ -314,7 +326,7 @@ footer{border-top:1px solid var(--line);padding:32px 0;text-align:center;color:v
           <img src="assets/loan.png" alt="Loan Default Predictor preview" loading="lazy"
                onerror="this.onerror=null;this.src='https://image.thum.io/get/width/1000/crop/700/https://lending-club-credit-risk-r.streamlit.app/';this.addEventListener('error',()=>this.remove())">
         </div>
-        <div class="pnum mono">03</div>
+        <div class="pnum mono">04</div>
         <h4>Loan Default Predictor</h4>
         <div class="pstack">Python · scikit-learn · Streamlit · LLM</div>
         <p>A deployed ML web app on 1.3M loans that scores default risk and explains each prediction in plain English via an LLM.</p>
