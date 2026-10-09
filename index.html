@@ -256,9 +256,10 @@ footer{border-top:1px solid var(--line);padding:32px 0;text-align:center;color:v
   .hero h1{font-size:clamp(2rem,9vw,2.9rem)}              /* smaller headline so it fits phones */
   .container{padding:0 18px}
   .badge-spin{display:none}                               /* desktop flourish — hide so it never clips */
-  .stats{gap:12px}
-  .stat{padding:24px 12px;min-width:0}
-  .stat .n{font-size:1.9rem}
+  .stats{grid-template-columns:1fr;gap:10px;margin-bottom:48px}
+  .stat{display:flex;align-items:center;justify-content:center;gap:10px;padding:14px 16px;min-width:0}
+  .stat .n{font-size:1.5rem}
+  .stat .l{margin-top:0}
   .marquee span{font-size:1.2rem;gap:30px}
   .marquee-track{gap:30px}
   .pcard .pnum{font-size:2.6rem}
