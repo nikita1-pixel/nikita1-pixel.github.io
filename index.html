@@ -243,7 +243,7 @@ footer{border-top:1px solid var(--line);padding:32px 0;text-align:center;color:v
   .hero-grid > *{min-width:0}                    /* let the code block shrink instead of overflowing the screen */
   .editor-wrap{margin:0 auto;width:100%}         /* name leads; editor sits below, full width */
   .hero .lead{margin-left:auto;margin-right:auto}
-  .stats{grid-template-columns:1fr 1fr}
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}   /* minmax(0,…) lets cards shrink so they never spill off-screen */
   .badge-spin{width:88px;height:88px;top:-2px;right:0}
 }
 @media(max-width:860px){.tl-item{grid-template-columns:1fr;gap:8px}section{padding:80px 0}}
@@ -251,11 +251,14 @@ footer{border-top:1px solid var(--line);padding:32px 0;text-align:center;color:v
   .nav-links{position:fixed;top:70px;left:16px;right:16px;flex-direction:column;align-items:stretch;gap:4px;background:rgba(12,12,17,.98);backdrop-filter:blur(16px);border:1px solid var(--line);border-radius:16px;padding:12px;display:none}
   .nav-links.open{display:flex}.nav-links a{padding:12px 14px}.nav-links .btn{margin:6px 0 0}
   .burger{display:block}.spotlight{display:none}
-  .proj-grid{grid-template-columns:1fr}
+  .proj-grid{grid-template-columns:minmax(0,1fr)}
   .hero{padding-top:104px}
   .hero h1{font-size:clamp(2rem,9vw,2.9rem)}              /* smaller headline so it fits phones */
   .container{padding:0 18px}
   .badge-spin{display:none}                               /* desktop flourish — hide so it never clips */
+  .stats{gap:12px}
+  .stat{padding:24px 12px;min-width:0}
+  .stat .n{font-size:1.9rem}
   .marquee span{font-size:1.2rem;gap:30px}
   .marquee-track{gap:30px}
   .pcard .pnum{font-size:2.6rem}
