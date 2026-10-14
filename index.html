@@ -341,7 +341,7 @@ footer{border-top:1px solid var(--line);padding:32px 0;text-align:center;color:v
   .pcard .pnum{font-size:2.6rem}
   .editor-body{font-size:.72rem;padding:16px;line-height:1.8}
 }
-@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}.mask-title .w-in{transform:none!important}}
 </style>
 <script>
 // set theme BEFORE first paint (no flash). saved choice wins; else follow the OS.
@@ -382,7 +382,7 @@ footer{border-top:1px solid var(--line);padding:32px 0;text-align:center;color:v
   <div class="container">
     <div class="hero-grid">
       <div>
-        <h1><span class="wave">👋</span> Hey, I'm<br>Nirmala <span class="grad">Choudhary</span></h1>
+        <h1 class="mask-title hero-name"><span class="w-mask"><span class="w-in" style="transition-delay:.05s"><span class="wave">👋</span> Hey, I'm</span></span><br><span class="w-mask"><span class="w-in" style="transition-delay:.17s">Nirmala <span class="grad">Choudhary</span></span></span></h1>
         <div class="type-line mono">&gt; <span class="tw" id="tw"></span><span class="cur"></span></div>
         <p class="lead"><strong>Full-Stack Engineer</strong> specializing in scalable React frontends, distributed Node/Express architectures, and applied AI workflows. I build and deploy production-ready web platforms end to end — pairing responsive React interfaces with decoupled Node.js services, asynchronous BullMQ job pipelines, and vector-grounded LLM workflows. My flagship work runs live, fully containerized, and integrated with automated CI/CD pipelines.</p>
         <div class="hero-actions">
@@ -717,6 +717,13 @@ if(!matchMedia('(prefers-reduced-motion:reduce)').matches){
 const cio=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){const el=e.target,t=+el.dataset.count;let n=0;const step=()=>{n+=Math.ceil(t/20);if(n>=t){el.textContent=t;}else{el.textContent=n;requestAnimationFrame(step);}};step();cio.unobserve(el);}});},{threshold:.5});
 document.querySelectorAll('[data-count]').forEach(el=>cio.observe(el));
 
+// hero name masked slide-up on load
+(function(){
+  const h=document.querySelector('.hero h1.mask-title');if(!h)return;
+  if(matchMedia('(prefers-reduced-motion:reduce)').matches){h.classList.add('in');return;}
+  requestAnimationFrame(()=>requestAnimationFrame(()=>h.classList.add('in')));
+})();
+
 // accordion / FAQ (smooth click-to-open height)
 document.querySelectorAll('.acc-q').forEach(q=>{
   q.addEventListener('click',()=>{
@@ -819,8 +826,7 @@ if(window.gsap){
     // cinematic hero load-in
     const tl=gsap.timeline({defaults:{ease:'power3.out'}});
     tl.from('.hero .tag',{y:20,opacity:0,duration:.6},.1)
-      .from('.hero h1',{y:40,opacity:0,duration:.9},'-=.3')
-      .from('.editor-wrap',{y:50,opacity:0,scale:.95,duration:1},'-=.7')
+      .from('.editor-wrap',{y:50,opacity:0,scale:.95,duration:1},'-=.3')
       .from('.hero .type-line',{y:18,opacity:0,duration:.5},'-=.6')
       .from('.hero .lead',{y:18,opacity:0,duration:.5},'-=.4')
       .from('.hero-actions > *',{y:18,opacity:0,duration:.5,stagger:.08},'-=.3');
