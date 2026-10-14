@@ -762,9 +762,11 @@ document.querySelectorAll('.acc-q').forEach(q=>{
     if(src){img.src=src;img.alt=title.textContent+' preview';thumb.style.display='';}else{thumb.style.display='none';}
     lastFocus=document.activeElement;
     modal.classList.add('open');modal.setAttribute('aria-hidden','false');document.body.classList.add('pmodal-lock');
+    if(window.__lenis)window.__lenis.stop();
+    modal.scrollTop=0;const pc=modal.querySelector('.pmodal-card');if(pc)pc.scrollTop=0;
     modal.querySelector('.pmodal-x').focus();
   }
-  function close(){modal.classList.remove('open');modal.setAttribute('aria-hidden','true');document.body.classList.remove('pmodal-lock');if(lastFocus)lastFocus.focus();}
+  function close(){modal.classList.remove('open');modal.setAttribute('aria-hidden','true');document.body.classList.remove('pmodal-lock');if(window.__lenis)window.__lenis.start();if(lastFocus)lastFocus.focus();}
   document.querySelectorAll('.pcard').forEach(card=>{
     card.addEventListener('click',e=>{if(e.target.closest('a')||e.target.closest('button'))return;openFromCard(card);});
   });
@@ -781,6 +783,7 @@ if(window.gsap){
   // Lenis smooth-scroll with inertia, synced to ScrollTrigger
   if(window.Lenis && !reduce){
     const lenis=new Lenis({duration:1.2,easing:t=>Math.min(1,1.001-Math.pow(2,-10*t)),smoothWheel:true});
+    window.__lenis=lenis;
     lenis.on('scroll',ScrollTrigger.update);
     gsap.ticker.add(t=>lenis.raf(t*1000));
     gsap.ticker.lagSmoothing(0);
