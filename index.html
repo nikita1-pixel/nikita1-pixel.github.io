@@ -267,6 +267,24 @@ nav{max-width:var(--maxw);margin:0 auto;display:flex;align-items:center;justify-
 .acc-item.open .acc-ic{transform:rotate(45deg)}
 .acc-a{max-height:0;overflow:hidden;transition:max-height .42s cubic-bezier(.4,0,.2,1)}
 .acc-a p{padding:0 24px 20px;margin:0;color:var(--gray);line-height:1.65;font-size:.96rem}
+/* ===== project detail modal (click a card) ===== */
+.pcard{cursor:pointer}
+.pmodal{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;pointer-events:none;transition:opacity .3s}
+.pmodal.open{opacity:1;pointer-events:auto}
+.pmodal-backdrop{position:absolute;inset:0;background:rgba(5,5,8,.72);backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px)}
+.pmodal-card{position:relative;z-index:1;width:min(720px,100%);max-height:88vh;overflow:auto;background:var(--card);border:1px solid var(--line-2);border-radius:22px;box-shadow:0 40px 90px -30px rgba(0,0,0,.8);transform:translateY(26px) scale(.97);transition:transform .38s cubic-bezier(.16,1,.3,1)}
+.pmodal.open .pmodal-card{transform:none}
+.pmodal-x{position:absolute;top:14px;right:16px;z-index:2;width:38px;height:38px;border-radius:50%;border:1px solid var(--line-2);background:rgba(0,0,0,.4);color:#fff;font-size:1.3rem;line-height:1;cursor:pointer;display:grid;place-items:center;transition:.25s}
+.pmodal-x:hover{background:var(--accent);color:#0a0a0b;transform:rotate(90deg)}
+.pmodal-thumb{height:260px;overflow:hidden;background:var(--card-2);border-radius:22px 22px 0 0}
+.pmodal-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.pmodal-body{padding:26px 30px 30px}
+.pmodal-num{font-family:'JetBrains Mono',monospace;color:var(--accent);font-size:.78rem;letter-spacing:.12em;margin-bottom:7px}
+.pmodal-body h3{font-family:'Syne',sans-serif;font-size:1.7rem;margin:0 0 12px}
+.pmodal-body .pstack{margin-bottom:16px}
+.pmodal-body p{color:var(--gray);line-height:1.7;margin:0 0 22px}
+body.pmodal-lock{overflow:hidden}
+@media(max-width:560px){.pmodal-thumb{height:175px}.pmodal-body{padding:22px}.pmodal-body h3{font-size:1.4rem}}
 .env-pocket{position:absolute;inset:0;z-index:20;pointer-events:none;overflow:hidden;border-radius:12px}
 .env-pocket .pk{position:absolute;width:0;height:0}
 .env-pocket .pk-left{bottom:0;left:0;border-style:solid;border-width:calc(var(--eh)/2) 0 calc(var(--eh)/2) calc(var(--ew)/2);border-color:transparent transparent transparent var(--card-2)}
@@ -555,6 +573,22 @@ footer{border-top:1px solid var(--line);padding:32px 0;text-align:center;color:v
 
 <footer>© 2026 Nirmala Choudhary · built &amp; deployed by hand · <span style="color:var(--accent)">&lt;/&gt;</span></footer>
 
+<!-- PROJECT DETAIL MODAL -->
+<div class="pmodal" id="pmodal" aria-hidden="true">
+  <div class="pmodal-backdrop" data-close></div>
+  <div class="pmodal-card" role="dialog" aria-modal="true" aria-labelledby="pmTitle">
+    <button class="pmodal-x" type="button" data-close aria-label="Close">&times;</button>
+    <div class="pmodal-thumb"><img id="pmImg" alt=""></div>
+    <div class="pmodal-body">
+      <div class="pmodal-num" id="pmNum"></div>
+      <h3 id="pmTitle"></h3>
+      <div class="pstack" id="pmStack"></div>
+      <p id="pmDesc"></p>
+      <div class="plinks" id="pmLinks"></div>
+    </div>
+  </div>
+</div>
+
 <!-- GSAP + ScrollTrigger + Lenis (progressive enhancement) -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
@@ -663,6 +697,35 @@ document.querySelectorAll('.acc-q').forEach(q=>{
     else{item.classList.add('open');ans.style.maxHeight=ans.scrollHeight+'px';}
   });
 });
+
+// project detail modal (click a card → open; links still work)
+(function(){
+  const modal=document.getElementById('pmodal');
+  if(!modal) return;
+  const img=document.getElementById('pmImg'),thumb=modal.querySelector('.pmodal-thumb');
+  const num=document.getElementById('pmNum'),title=document.getElementById('pmTitle');
+  const stack=document.getElementById('pmStack'),desc=document.getElementById('pmDesc'),linksEl=document.getElementById('pmLinks');
+  let lastFocus=null;
+  function openFromCard(card){
+    const h=card.querySelector('h4'),ps=card.querySelector('.pstack'),p=card.querySelector('p'),pn=card.querySelector('.pnum'),im=card.querySelector('.pthumb img'),links=card.querySelector('.plinks');
+    title.textContent=h?h.textContent:'';
+    num.textContent=pn?('PROJECT '+pn.textContent):'';
+    stack.textContent=ps?ps.textContent:'';
+    desc.textContent=p?p.textContent:'';
+    linksEl.innerHTML=links?links.innerHTML:'';
+    const src=im&&(im.currentSrc||im.src);
+    if(src){img.src=src;img.alt=title.textContent+' preview';thumb.style.display='';}else{thumb.style.display='none';}
+    lastFocus=document.activeElement;
+    modal.classList.add('open');modal.setAttribute('aria-hidden','false');document.body.classList.add('pmodal-lock');
+    modal.querySelector('.pmodal-x').focus();
+  }
+  function close(){modal.classList.remove('open');modal.setAttribute('aria-hidden','true');document.body.classList.remove('pmodal-lock');if(lastFocus)lastFocus.focus();}
+  document.querySelectorAll('.pcard').forEach(card=>{
+    card.addEventListener('click',e=>{if(e.target.closest('a')||e.target.closest('button'))return;openFromCard(card);});
+  });
+  modal.querySelectorAll('[data-close]').forEach(el=>el.addEventListener('click',close));
+  addEventListener('keydown',e=>{if(e.key==='Escape'&&modal.classList.contains('open'))close();});
+})();
 
 // ===== GSAP-level enhancements (progressive: page works without them) =====
 if(window.gsap){
