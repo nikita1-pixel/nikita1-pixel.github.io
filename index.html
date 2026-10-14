@@ -287,6 +287,11 @@ nav{max-width:var(--maxw);margin:0 auto;display:flex;align-items:center;justify-
 .pmodal-body p{color:var(--gray);line-height:1.7;margin:0 0 22px}
 body.pmodal-lock{overflow:hidden}
 @media(max-width:560px){.pmodal-thumb{height:175px}.pmodal-body{padding:22px}.pmodal-body h3{font-size:1.4rem}}
+.pm-details{margin:0 0 22px;display:flex;flex-direction:column;gap:17px}
+.pm-detail h5{font-family:'JetBrains Mono',monospace;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin:0 0 7px}
+.pm-detail p{color:var(--gray);line-height:1.65;margin:0;font-size:.95rem}
+.pm-detail ul{margin:0;padding-left:18px;color:var(--gray);line-height:1.65;font-size:.95rem}
+.pm-detail li{margin-bottom:5px}
 .env-pocket{position:absolute;inset:0;z-index:20;pointer-events:none;overflow:hidden;border-radius:12px}
 .env-pocket .pk{position:absolute;width:0;height:0}
 .env-pocket .pk-left{bottom:0;left:0;border-style:solid;border-width:calc(var(--eh)/2) 0 calc(var(--eh)/2) calc(var(--ew)/2);border-color:transparent transparent transparent var(--card-2)}
@@ -586,6 +591,7 @@ footer{border-top:1px solid var(--line);padding:32px 0;text-align:center;color:v
       <h3 id="pmTitle"></h3>
       <div class="pstack" id="pmStack"></div>
       <p id="pmDesc"></p>
+      <div class="pm-details" id="pmDetails"></div>
       <div class="plinks" id="pmLinks"></div>
     </div>
   </div>
@@ -706,7 +712,41 @@ document.querySelectorAll('.acc-q').forEach(q=>{
   if(!modal) return;
   const img=document.getElementById('pmImg'),thumb=modal.querySelector('.pmodal-thumb');
   const num=document.getElementById('pmNum'),title=document.getElementById('pmTitle');
-  const stack=document.getElementById('pmStack'),desc=document.getElementById('pmDesc'),linksEl=document.getElementById('pmLinks');
+  const stack=document.getElementById('pmStack'),desc=document.getElementById('pmDesc'),linksEl=document.getElementById('pmLinks'),detailsEl=document.getElementById('pmDetails');
+  const DETAILS={
+    "ScribeOS":{
+      what:`An AI SaaS that reads customer feedback, auto-tags sentiment and themes with an LLM, then answers plain-English questions about it using retrieval-augmented generation with cited sources.`,
+      why:`Teams drown in unstructured feedback and can't read it all. ScribeOS turns raw feedback into grounded, searchable answers — ask "what are customers unhappy about?" and get a sourced reply.`,
+      scope:`Solo-built full-stack: REST API, an asynchronous worker pipeline, vector search, auth, and end-to-end deployment.`,
+      features:[`Async processing with Redis + BullMQ (retries + dead-letter handling)`,`RAG over MongoDB Atlas Vector Search with source citations`,`Role-scoped JWT authentication + a read-only guest demo`,`Deployed live — React on Vercel, API on Render`]
+    },
+    "Gov-Dash":{
+      what:`A civic reporting platform: citizens lodge grievances on an interactive map and admins triage them, each with role-based permissions.`,
+      why:`Municipal grievance handling is fragmented. Gov-Dash gives citizens and staff one portal with clear roles and fast, filterable issue tracking.`,
+      scope:`Full-stack build including a relational-to-document database migration, containerization, and automated deployments.`,
+      features:[`Multi-tier Role-Based Access Control (RBAC) + JWT auth`,`Geospatial grievance tracking and filtering`,`PostgreSQL to MongoDB schema migration for faster queries`,`Multi-stage Docker builds + GitHub Actions CI/CD`]
+    },
+    "Trekus":{
+      what:`A trekking community and booking platform — members share reviews and photos, book treks, see live weather, and chat with an AI "Trail Guide".`,
+      why:`Trekkers lack one trustworthy place to discover, review, and book treks with grounded, up-to-date information.`,
+      scope:`Full-stack TypeScript app on Supabase with database-level security and an AI assistant grounded in live data.`,
+      features:[`React + TypeScript frontend on Vercel serverless functions`,`PostgreSQL Row-Level Security for strict user-data isolation`,`Gemini AI "Trail Guide" grounded in live data`,`Community wall, bookings, and CI tests on every push`]
+    },
+    "NoteBoard":{
+      what:`A full-stack note-taking app for organizing rich notes with persistent image attachments on one dashboard.`,
+      why:`A focused build to master end-to-end CRUD, multipart file uploads, and clean REST API design.`,
+      scope:`Full-stack MERN app with server-side file handling and a responsive UI.`,
+      features:[`Modular Express REST endpoints for full CRUD`,`Multer multipart uploads with server-side validation`,`Responsive React grid + automatic dark mode`,`Strict API error-handling middleware`]
+    },
+    "Loan Default Predictor":{
+      what:`A deployed ML web app that scores loan-default risk and explains each prediction in plain English via an LLM.`,
+      why:`Raw risk scores aren't actionable for non-technical users. Pairing the model with an LLM explainer makes each decision understandable.`,
+      scope:`End-to-end ML product: data prep, the model, an LLM explanation layer, and a deployed interactive UI.`,
+      features:[`scikit-learn risk model trained on 1.3M loan records`,`LLM plain-language explanation for every prediction`,`Product framing around business cost vs raw accuracy`,`Live, interactive Streamlit web app`]
+    }
+  };
+  const sect=(h,t)=>t?'<div class="pm-detail"><h5>'+h+'</h5><p>'+t+'</p></div>':'';
+  const feats=(h,a)=>(a&&a.length)?'<div class="pm-detail"><h5>'+h+'</h5><ul>'+a.map(x=>'<li>'+x+'</li>').join('')+'</ul></div>':'';
   let lastFocus=null;
   function openFromCard(card){
     const h=card.querySelector('h4'),ps=card.querySelector('.pstack'),p=card.querySelector('p'),pn=card.querySelector('.pnum'),im=card.querySelector('.pthumb img'),links=card.querySelector('.plinks');
@@ -714,6 +754,9 @@ document.querySelectorAll('.acc-q').forEach(q=>{
     num.textContent=pn?('PROJECT '+pn.textContent):'';
     stack.textContent=ps?ps.textContent:'';
     desc.textContent=p?p.textContent:'';
+    const d=DETAILS[(h?h.textContent.trim():'')];
+    if(d){desc.style.display='none';detailsEl.innerHTML=sect('What it is',d.what)+sect('Why I built it',d.why)+sect('Scope &amp; my role',d.scope)+feats('Key features',d.features);}
+    else{desc.style.display='';detailsEl.innerHTML='';}
     linksEl.innerHTML=links?links.innerHTML:'';
     const src=im&&(im.currentSrc||im.src);
     if(src){img.src=src;img.alt=title.textContent+' preview';thumb.style.display='';}else{thumb.style.display='none';}
