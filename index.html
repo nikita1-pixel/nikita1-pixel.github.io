@@ -269,6 +269,8 @@ nav{max-width:var(--maxw);margin:0 auto;display:flex;align-items:center;justify-
 .acc-a p{padding:0 24px 20px;margin:0;color:var(--gray);line-height:1.65;font-size:.96rem}
 /* ===== project detail modal (click a card) ===== */
 .pcard{cursor:pointer}
+.pthumb::after{content:"View details →";position:absolute;inset:0;z-index:2;display:grid;place-items:center;background:rgba(8,6,16,.5);color:#fff;font-family:'JetBrains Mono',monospace;font-size:.86rem;font-weight:600;letter-spacing:.04em;opacity:0;transition:opacity .28s;pointer-events:none}
+.pcard:hover .pthumb::after{opacity:1}
 .pmodal{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;pointer-events:none;transition:opacity .3s}
 .pmodal.open{opacity:1;pointer-events:auto}
 .pmodal-backdrop{position:absolute;inset:0;background:rgba(5,5,8,.72);backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px)}
