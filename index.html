@@ -175,21 +175,6 @@ nav{max-width:var(--maxw);margin:0 auto;display:flex;align-items:center;justify-
 .mask-title .w-mask{display:inline-block;overflow:hidden;vertical-align:bottom;padding-bottom:.12em;margin-bottom:-.12em}
 .mask-title .w-in{display:inline-block;transform:translateY(118%);transition:transform .8s cubic-bezier(.19,.85,.26,1)}
 .mask-title.in .w-in{transform:none}
-/* ===== hero 3D ring sculpture ===== */
-.sculpt-wrap{position:relative;display:grid;place-items:center;min-height:440px;perspective:1100px}
-.sculpt-glow{position:absolute;width:340px;height:340px;border-radius:50%;background:radial-gradient(circle,rgba(167,139,250,.5),rgba(34,211,238,.16) 45%,transparent 68%);filter:blur(55px);z-index:0}
-.sculpt-float{position:relative;z-index:1;transform-style:preserve-3d;animation:sculptFloat 7s ease-in-out infinite}
-@keyframes sculptFloat{0%,100%{transform:translateY(-12px)}50%{transform:translateY(14px)}}
-.sculpt-tilt{transform-style:preserve-3d;transition:transform .35s ease-out}
-.sculpt-spin{position:relative;width:300px;height:300px;transform-style:preserve-3d;animation:sculptSpin 26s linear infinite}
-@keyframes sculptSpin{from{transform:rotateY(0deg) rotateX(14deg)}to{transform:rotateY(360deg) rotateX(14deg)}}
-.ring{position:absolute;inset:0;border-radius:50%;border:2px solid rgba(167,139,250,.75);box-shadow:0 0 24px rgba(167,139,250,.35),inset 0 0 18px rgba(167,139,250,.18);transform-style:preserve-3d}
-.ring.r1{transform:rotateX(76deg)}
-.ring.r2{transform:rotateY(76deg);border-color:rgba(34,211,238,.72);box-shadow:0 0 24px rgba(34,211,238,.3),inset 0 0 18px rgba(34,211,238,.15)}
-.ring.r3{transform:rotateX(58deg) rotateY(60deg);border-color:rgba(212,255,79,.7);box-shadow:0 0 22px rgba(212,255,79,.28),inset 0 0 16px rgba(212,255,79,.14)}
-.core{position:absolute;top:50%;left:50%;width:76px;height:76px;margin:-38px 0 0 -38px;border-radius:50%;background:radial-gradient(circle at 34% 28%,#fff,var(--accent) 46%,#4c1d95 92%);box-shadow:0 0 48px rgba(167,139,250,.75),inset -7px -9px 18px rgba(0,0,0,.45)}
-@media(max-width:900px){.sculpt-spin{width:240px;height:240px}.sculpt-wrap{min-height:340px}.sculpt-glow{width:280px;height:280px}.core{width:62px;height:62px;margin:-31px 0 0 -31px}}
-@media(max-width:480px){.sculpt-spin{width:190px;height:190px}.sculpt-wrap{min-height:280px}}
 
 /* ===== headings ===== */
 .eyebrow{display:inline-block;font-family:'JetBrains Mono',monospace;color:var(--accent);font-weight:600;font-size:.8rem;letter-spacing:.1em;margin-bottom:14px}
@@ -417,11 +402,9 @@ footer{border-top:1px solid var(--line);padding:32px 0;text-align:center;color:v
           </svg>
           <span class="badge-star">✦</span>
         </div>
-        <div class="sculpt-wrap" aria-hidden="true">
-          <div class="sculpt-glow"></div>
-          <div class="sculpt-float"><div class="sculpt-tilt" id="sculptTilt"><div class="sculpt-spin">
-            <span class="ring r1"></span><span class="ring r2"></span><span class="ring r3"></span><span class="core"></span>
-          </div></div></div>
+        <div class="editor">
+          <div class="editor-bar"><i class="r"></i><i class="y"></i><i class="g"></i><span class="fname mono">developer.js</span></div>
+          <div class="editor-body mono" id="code"></div>
         </div>
       </div>
     </div>
@@ -700,7 +683,6 @@ const codeHTML=`<span class="cm">// who am i?</span>
 };`;
 // type it out char-by-char while preserving tags
 (function(){
-  if(!codeEl)return;
   let i=0;const raw=codeHTML;
   function step(){
     if(i>raw.length){codeEl.innerHTML=raw+'<span class="code-cur"></span>';return;}
@@ -740,14 +722,6 @@ document.querySelectorAll('[data-count]').forEach(el=>cio.observe(el));
   const h=document.querySelector('.hero h1.mask-title');if(!h)return;
   if(matchMedia('(prefers-reduced-motion:reduce)').matches){h.classList.add('in');return;}
   requestAnimationFrame(()=>requestAnimationFrame(()=>h.classList.add('in')));
-})();
-
-// hero 3D sculpture — subtle pointer parallax tilt
-(function(){
-  const tilt=document.getElementById('sculptTilt'),hero=document.querySelector('.hero');
-  if(!tilt||!hero||!matchMedia('(pointer:fine)').matches||matchMedia('(prefers-reduced-motion:reduce)').matches)return;
-  hero.addEventListener('mousemove',e=>{const r=hero.getBoundingClientRect();const px=(e.clientX-r.left)/r.width-.5,py=(e.clientY-r.top)/r.height-.5;tilt.style.transform='rotateY('+(px*20).toFixed(2)+'deg) rotateX('+(-py*20).toFixed(2)+'deg)';});
-  hero.addEventListener('mouseleave',()=>{tilt.style.transform='';});
 })();
 
 // accordion / FAQ (smooth click-to-open height)
